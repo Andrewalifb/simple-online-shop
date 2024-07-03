@@ -10,24 +10,24 @@ class CartModel extends Model
 
     public function addCart($data)
     {
-
+        // Perform input validation here
         if (empty($data['user_id'])) {
             throw new \Exception('User ID is required');
         }
-    
+
         $userModel = new \App\Models\UserModel();
         $user = $userModel->find($data['user_id']);
         if (!$user) {
             throw new \Exception('User not found');
         }
-    
+
         $cartId = $this->insert($data);
         return $this->find($cartId);
     }
-    
+
     public function checkout($id)
     {
-
+        // Perform input validation here
         $cart = $this->find($id);
         if (!$cart) {
             throw new \Exception('Cart not found');
