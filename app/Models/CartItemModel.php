@@ -10,7 +10,7 @@ class CartItemModel extends Model
 
     public function addItemToCart($data)
     {
- 
+        // Perform input validation here
         if (empty($data['cart_id']) || empty($data['item_id']) || empty($data['quantity'])) {
             throw new \Exception('Cart ID, Item ID, and Quantity are required');
         }
@@ -29,5 +29,13 @@ class CartItemModel extends Model
         $insertedData['subtotal'] = $item['price'] * $data['quantity'];
 
         return $insertedData;
+    }
+
+    public function getItemsInCart($cartId)
+    {
+        return $this->select('cart_items.id, cart_items.quantity, items.name, items.price')
+                    ->join('items', 'items.id = cart_items.item_id')
+                    ->where('cart_id', $cartId)
+                    ->findAll();
     }
 }
